@@ -108,12 +108,13 @@
     <ClCompile Include="DiShdr.cpp" />
     <ClCompile Include="DiShdrUtil.cpp" />
     <ClCompile Include="DiVBO.cpp" />
+    <ClCompile Include="DiView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DiShdr.h" />
-    <ClInclude Include="DiShdrCm.h" />
     <ClInclude Include="DiShdrUtil.h" />
     <ClInclude Include="DiVBO.h" />
+    <ClInclude Include="DiView.h" />
     <ClInclude Include="VxDisp.h" />
     <ClInclude Include="VxDispCm.h" />
   </ItemGroup>

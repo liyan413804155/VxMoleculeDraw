@@ -35,6 +35,9 @@
     <ClCompile Include="DiVBO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DiView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VxDisp.h">
@@ -52,7 +55,7 @@
     <ClInclude Include="VxDispCm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiShdrCm.h">
+    <ClInclude Include="DiView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,6 @@
 #ifndef DI_SHDR_H
 #define DI_SHDR_H
 
-#include "DiShdrCm.h"
-
 class DiShdr
 {
 public:
@@ -11,7 +9,9 @@ public:
 
     void active(VeShdrType shdrType);
     void bindVBO();
-    void setSurfAt(DiSurfAt& surfAt);
+    void setSurfAt(const DiSurfAt& surfAt);
+    void setProjMat(const QMatrix4x4& mat);
+    void setViewMat(const QMatrix4x4& mat);
 
 private:
     friend class DiShdrImpl;

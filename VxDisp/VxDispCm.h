@@ -3,6 +3,7 @@
 
 #include <QtCore/qglobal.h>
 
+#include <QMatrix4x4>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
@@ -20,6 +21,12 @@
 #else
 # define VXDISP_EXPORT
 #endif
+
+enum VeShdrType
+{
+    DiShdrFace = 0,
+    DiShdrLast
+};
 
 struct DiSurfAt
 {

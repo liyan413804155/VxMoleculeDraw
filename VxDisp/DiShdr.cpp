@@ -3,6 +3,9 @@
 
 #define VBO_AT_VERTEX   "VxVertex"
 
+#define VBO_UN_PROJMAT  "VxProjMat"
+#define VBO_UN_VIEWMAT  "VxViewMat"
+
 struct ShdrFile
 {
     QVector<QString> m_vert;
@@ -65,9 +68,19 @@ void DiShdr::bindVBO()
     d->m_progAct->setAttributeBuffer(vertexLocation, GL_FLOAT, 0, 3, sizeof(QVector3D));
 }
 
-void DiShdr::setSurfAt(DiSurfAt& surfAt)
+void DiShdr::setSurfAt(const DiSurfAt& surfAt)
 {
 
+}
+
+void DiShdr::setProjMat(const QMatrix4x4& mat)
+{
+    d->m_progAct->setUniformValue(VBO_UN_PROJMAT, mat);
+}
+
+void DiShdr::setViewMat(const QMatrix4x4& mat)
+{
+    d->m_progAct->setUniformValue(VBO_UN_VIEWMAT, mat);
 }
 
 DiShdr VgDiShdr;

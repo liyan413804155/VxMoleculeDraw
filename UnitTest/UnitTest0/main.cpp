@@ -23,7 +23,7 @@ public:
 private:
     virtual void resizeGL(int w, int h)override
     {
-
+        m_view.reisze(w, h);
     }
 
     virtual void initializeGL()override
@@ -37,12 +37,19 @@ private:
 
         m_vbo = new DiVBO(vertex);
 
-        diShdrActive(DiShdrFace);
+        
     }
 
     virtual void paintGL()override
     {
+        
+
         glClear(GL_COLOR_BUFFER_BIT);
+
+        diShdrActive(DiShdrFace);
+
+        diShdrSetProjMat(m_view.getProjMat());
+        diShdrSetViewMat(m_view.getViewMat());
 
         m_vbo->renderSurf(m_surfAt);
     }
@@ -50,6 +57,7 @@ private:
 private:
     DiVBO *m_vbo;
     DiSurfAt m_surfAt;
+    DiView m_view;
 };
 
 int main(int argc, char *argv[])
