@@ -1,0 +1,6 @@
+<RCC version="1.0">
+    <qresource>
+        <file>shader/face.vert</file>
+        <file>shader/face.frag</file>
+    </qresource>
+</RCC>

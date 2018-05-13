@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{D5F166EF-EE90-405D-824D-EDB2AD760499}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest0", "UnitTest\UnitTest0\UnitTest0.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF} = {290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VxDisp", "VxDisp\VxDisp.vcxproj", "{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.ActiveCfg = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.Build.0 = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.Build.0 = Release|Win32
+		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Debug|x86.ActiveCfg = Debug|Win32
+		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Debug|x86.Build.0 = Debug|Win32
+		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Release|x86.ActiveCfg = Release|Win32
+		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B12702AD-ABFB-343A-A199-8E24837244A3} = {D5F166EF-EE90-405D-824D-EDB2AD760499}
+	EndGlobalSection
+EndGlobal
