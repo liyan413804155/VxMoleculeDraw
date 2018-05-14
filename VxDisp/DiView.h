@@ -5,8 +5,8 @@ public:
     ~DiView();
 
 public:
-    void reisze(float w, float h);
-    void zoom(float x, float y, float r);
+    void reisze(float wDev, float hDev);
+    void zoom(float xDev, float yDev, float factor);
 
 public:
     QMatrix4x4 getViewMat()const;
