@@ -19,6 +19,8 @@ public:
     float m_zFar;   /* z axis farther value */
 
     QMatrix4x4 m_viewMat;   /* view matrix */
+
+    float m_rotTurns;   /* rotate turns */
 };
 
 DiView::DiView()
@@ -31,6 +33,7 @@ DiView::DiView()
     d->m_extent = 1;
     d->m_zNear = -500;
     d->m_zFar = 500;
+    d->m_rotTurns = 4;
 }
 
 DiView::~DiView()
@@ -76,6 +79,29 @@ float factor    /* i: zoom factor */
     d->m_extent /= factor;
 }
 
+void DiView::rotate
+(
+const QMatrix4x4& viewMat,  /* i: view matrix */
+const QPointF& srcDev,      /* i: rotate source point in device coordinate system */
+const QPointF& desDev       /* i: rotate destination point in device coordinate system */
+)
+{
+    /* length to angle */
+    float r = 180.0f * (d->m_extent * d->m_rotTurns) / 
+        (d->m_wDev  > d->m_hDev ? d->m_wDev : d->m_hDev);
+    float yAngle =  (desDev.x() - srcDev.x()) * r;
+    float xAngle = -(desDev.y() - srcDev.y()) * r;
+
+    /* projection view transform */
+    QMatrix4x4 projView = getProjMat() * viewMat;
+    projView.rotate(yAngle, projView(1, 0), projView(1, 1), projView(1, 2));
+    projView.rotate(xAngle, projView(0, 0), projView(0, 1), projView(0, 2));
+
+    /* update original view matrix */
+    QMatrix4x4 inv = getProjMat().inverted();
+    d->m_viewMat = inv * projView;
+}
+
 QMatrix4x4 DiView::getProjMat()const
 {
     float w_h = d->m_wDev / d->m_hDev;
@@ -102,4 +128,14 @@ QMatrix4x4 DiView::getProjMat()const
 QMatrix4x4 DiView::getViewMat()const
 {
     return d->m_viewMat;
+}
+
+float DiView::getWidth()const
+{
+    return d->m_wDev;
+}
+
+float DiView::getHeight()const
+{
+    return d->m_hDev;
 }

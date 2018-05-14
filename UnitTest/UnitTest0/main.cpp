@@ -14,7 +14,7 @@ public:
     MyDrawing(QWidget* parent)
         : QOpenGLWidget(parent)
     {
-
+        m_beginRot = false;
     }
 
     ~MyDrawing()
@@ -63,11 +63,45 @@ private:
         __super::wheelEvent(event);
     }
 
+    virtual void mousePressEvent(QMouseEvent *event)
+    {
+        m_rotViewSrc = QPointF(event->localPos().x(), m_view.getHeight() - event->localPos().y());
+
+        m_rotViewMat = m_view.getViewMat();
+
+        m_beginRot = true;
+
+        __super::mousePressEvent(event);
+    }
+
+    virtual void mouseMoveEvent(QMouseEvent *event)
+    {
+        if (m_beginRot)
+        {
+            QPointF rotViewDes = QPointF(event->localPos().x(), m_view.getHeight() - event->localPos().y());
+
+            m_view.rotate(m_rotViewMat, m_rotViewSrc, rotViewDes);
+
+            update();
+        }
+
+        __super::mouseMoveEvent(event);
+    }
+
+    virtual void mouseReleaseEvent(QMouseEvent *event)
+    {
+        m_beginRot = false;
+    }
+
 private:
     DiVBO *m_vbo;
-    DiSurfAt m_surfAt;
-    DiView m_view;
     DiShdr m_shdr;
+
+    DiView m_view;
+
+    QMatrix4x4 m_rotViewMat;
+    QPointF m_rotViewSrc;
+    bool m_beginRot;
 };
 
 int main(int argc, char *argv[])
