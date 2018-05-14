@@ -44,12 +44,12 @@ private:
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        diShdrActive(DiShdrFace);
+        m_shdr.active(DiShdrFace);
 
-        diShdrSetProjMat(m_view.getProjMat());
-        diShdrSetViewMat(m_view.getViewMat());
+        m_shdr.setProjMat(m_view.getProjMat());
+        m_shdr.setViewMat(m_view.getViewMat());
 
-        m_vbo->renderSurf(m_surfAt);
+        m_vbo->renderSurf(m_shdr);
     }
 
     virtual void wheelEvent(QWheelEvent *event)
@@ -67,6 +67,7 @@ private:
     DiVBO *m_vbo;
     DiSurfAt m_surfAt;
     DiView m_view;
+    DiShdr m_shdr;
 };
 
 int main(int argc, char *argv[])

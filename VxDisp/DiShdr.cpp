@@ -82,5 +82,3 @@ void DiShdr::setViewMat(const QMatrix4x4& mat)
 {
     d->m_progAct->setUniformValue(VBO_UN_VIEWMAT, mat);
 }
-
-DiShdr VgDiShdr;

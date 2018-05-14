@@ -1,13 +1,15 @@
 #ifndef DI_VBO_H
 #define DI_VBO_H
 
+#include "DiShdr.h"
+
 class VXDISP_EXPORT DiVBO
 {
 public:
     DiVBO(QVector<QVector3D>& vertex);
     ~DiVBO();
 
-    void renderSurf(DiSurfAt& surfAt);
+    void renderSurf(DiShdr& shdr);
 
 private:
     friend class DiVBOImpl;

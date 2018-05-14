@@ -1,7 +1,7 @@
 #ifndef DI_SHDR_H
 #define DI_SHDR_H
 
-class DiShdr
+class VXDISP_EXPORT DiShdr
 {
 public:
     DiShdr();
@@ -17,8 +17,6 @@ private:
     friend class DiShdrImpl;
     DiShdrImpl *d;
 };
-
-extern DiShdr VgDiShdr;
 
 #endif
 

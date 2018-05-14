@@ -1,5 +1,4 @@
 #include "VxDispCm.h"
-#include "DiShdrUtil.h"
 #include "DiVBO.h"
 
 class DiVBOImpl
@@ -26,13 +25,10 @@ DiVBO::~DiVBO()
     delete d;
 }
 
-void DiVBO::renderSurf(DiSurfAt& surfAt)
+void DiVBO::renderSurf(DiShdr& shdr)
 {
     d->m_vbo.bind();
-
-    diShdrBindVBO();
-    diShdrSetSurfAt(surfAt);
-
+    shdr.bindVBO();
     glDrawArrays(GL_TRIANGLES, 0, d->m_count);
     d->m_vbo.release();
 }

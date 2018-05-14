@@ -2,7 +2,7 @@
 #define VX_DISP_H
 
 #include "VxDispCm.h"
-#include "DiShdrUtil.h"
+#include "DiShdr.h"
 #include "DiVBO.h"
 #include "DiView.h"
 
