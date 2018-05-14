@@ -10,6 +10,7 @@ public:
     ~DiVBO();
 
     void renderSurf(DiShdr& shdr);
+    void renderWire(DiShdr& shdr);
 
 private:
     friend class DiVBOImpl;

@@ -10,6 +10,7 @@ public:
     void active(VeShdrType shdrType);
     void bindVBO();
     void setSurfAt(const DiSurfAt& surfAt);
+    void setWireAt(const DiWireAt& wireAt);
     void setProjMat(const QMatrix4x4& mat);
     void setViewMat(const QMatrix4x4& mat);
 

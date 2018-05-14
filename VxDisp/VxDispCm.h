@@ -25,6 +25,7 @@
 enum VeShdrType
 {
     DiShdrFace = 0,
+    DiShdrWire = 1,
     DiShdrLast
 };
 
@@ -32,6 +33,11 @@ struct DiSurfAt
 {
     QVector3D front_color;
     QVector3D back_color;
+};
+
+struct DiWireAt
+{
+    QVector3D color;
 };
 
 #endif

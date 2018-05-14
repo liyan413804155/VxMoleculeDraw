@@ -32,3 +32,11 @@ void DiVBO::renderSurf(DiShdr& shdr)
     glDrawArrays(GL_TRIANGLES, 0, d->m_count);
     d->m_vbo.release();
 }
+
+void DiVBO::renderWire(DiShdr& shdr)
+{
+    d->m_vbo.bind();
+    shdr.bindVBO();
+    glDrawArrays(GL_LINES, 0, d->m_count);
+    d->m_vbo.release();
+}

@@ -1,6 +1,8 @@
-<RCC version="1.0">
-    <qresource>
+<RCC>
+    <qresource prefix="/">
         <file>shader/face.vert</file>
         <file>shader/face.frag</file>
+        <file>shader/wire.frag</file>
+        <file>shader/wire.vert</file>
     </qresource>
 </RCC>

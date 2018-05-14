@@ -15,11 +15,14 @@ public:
         : QOpenGLWidget(parent)
     {
         m_beginRot = false;
+        m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
+        m_surfAt.back_color = QVector3D(0.0f, 1.0f, 0.0f);
+        m_wireAt.color = QVector3D(0.0f, 0.0f, 0.0f);
     }
 
     ~MyDrawing()
     {
-        delete m_vbo;
+        delete m_faceVbo;
     }
 
 private:
@@ -32,12 +35,24 @@ private:
     {
         initializeOpenGLFunctions();
 
-        QVector<QVector3D> vertex;
-        vertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
-        vertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
-        vertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
+        QVector<QVector3D> faceVertex;
+        faceVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
+        faceVertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
+        faceVertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
 
-        m_vbo = new DiVBO(vertex);
+        m_faceVbo = new DiVBO(faceVertex);
+
+        QVector<QVector3D> wireVertex;
+        wireVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
+        wireVertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
+        wireVertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
+        wireVertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
+        wireVertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
+        wireVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
+
+        m_wireVbo = new DiVBO(faceVertex);
+
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     virtual void paintGL()override
@@ -46,10 +61,19 @@ private:
 
         m_shdr.active(DiShdrFace);
 
+        m_shdr.setSurfAt(m_surfAt);
         m_shdr.setProjMat(m_view.getProjMat());
         m_shdr.setViewMat(m_view.getViewMat());
 
-        m_vbo->renderSurf(m_shdr);
+        m_faceVbo->renderSurf(m_shdr);
+
+        m_shdr.active(DiShdrWire);
+
+        m_shdr.setWireAt(m_wireAt);
+        m_shdr.setProjMat(m_view.getProjMat());
+        m_shdr.setViewMat(m_view.getViewMat());
+
+        m_wireVbo->renderWire(m_shdr);
     }
 
     virtual void wheelEvent(QWheelEvent *event)
@@ -94,7 +118,12 @@ private:
     }
 
 private:
-    DiVBO *m_vbo;
+    DiVBO *m_faceVbo;
+    DiSurfAt m_surfAt;
+
+    DiVBO *m_wireVbo;
+    DiWireAt m_wireAt;
+
     DiShdr m_shdr;
 
     DiView m_view;

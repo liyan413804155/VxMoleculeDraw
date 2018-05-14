@@ -1,10 +1,12 @@
 #include "VxDispCm.h"
 #include "DiShdr.h"
 
-#define VBO_AT_VERTEX   "VxVertex"
+#define VBO_AT_VERTEX       "VxVertex"
 
-#define VBO_UN_PROJMAT  "VxProjMat"
-#define VBO_UN_VIEWMAT  "VxViewMat"
+#define VBO_UN_PROJMAT      "VxProjMat"
+#define VBO_UN_VIEWMAT      "VxViewMat"
+#define VBO_UN_FRONTCOLOR   "VxColor"
+#define VBO_UN_BACKCOLOR    "VxBackColor"
 
 struct ShdrFile
 {
@@ -28,6 +30,9 @@ DiShdr::DiShdr()
 
     d->m_shdrFile[DiShdrFace].m_vert.push_back(":/shader/face.vert");
     d->m_shdrFile[DiShdrFace].m_frag.push_back(":/shader/face.frag");
+
+    d->m_shdrFile[DiShdrWire].m_vert.push_back(":/shader/wire.vert");
+    d->m_shdrFile[DiShdrWire].m_frag.push_back(":/shader/wire.frag");
 }
 
 DiShdr::~DiShdr()
@@ -70,7 +75,13 @@ void DiShdr::bindVBO()
 
 void DiShdr::setSurfAt(const DiSurfAt& surfAt)
 {
+    d->m_progAct->setUniformValue(VBO_UN_FRONTCOLOR, surfAt.front_color);
+    d->m_progAct->setUniformValue(VBO_UN_BACKCOLOR,  surfAt.back_color);
+}
 
+void DiShdr::setWireAt(const DiWireAt& wireAt)
+{
+    d->m_progAct->setUniformValue(VBO_UN_FRONTCOLOR, wireAt.color);
 }
 
 void DiShdr::setProjMat(const QMatrix4x4& mat)

@@ -60,6 +60,12 @@
     <None Include="shader\face.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shader\wire.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader\wire.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="shader.qrc">
