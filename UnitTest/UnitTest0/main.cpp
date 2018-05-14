@@ -1,8 +1,10 @@
 #include <QApplication>
+
 #include <QMainWindow>
 #include <QOpenGLWidget>
 #include <QVector>
 #include <QVector3D>
+#include <QWheelEvent>
 
 #include "VxDisp.h"
 
@@ -36,14 +38,10 @@ private:
         vertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
 
         m_vbo = new DiVBO(vertex);
-
-        
     }
 
     virtual void paintGL()override
     {
-        
-
         glClear(GL_COLOR_BUFFER_BIT);
 
         diShdrActive(DiShdrFace);
@@ -52,6 +50,17 @@ private:
         diShdrSetViewMat(m_view.getViewMat());
 
         m_vbo->renderSurf(m_surfAt);
+    }
+
+    virtual void wheelEvent(QWheelEvent *event)
+    {
+        float r = event->delta() > 0 ? 1.1f : 1.0f / 1.1f;
+
+        m_view.zoom(event->x(), event->y(), r);
+
+        update();
+
+        __super::wheelEvent(event);
     }
 
 private:

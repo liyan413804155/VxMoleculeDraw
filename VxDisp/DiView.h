@@ -6,6 +6,7 @@ public:
 
 public:
     void reisze(float w, float h);
+    void zoom(float x, float y, float r);
 
 public:
     QMatrix4x4 getViewMat()const;
