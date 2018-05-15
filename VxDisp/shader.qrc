@@ -4,5 +4,6 @@
         <file>shader/face.frag</file>
         <file>shader/wire.frag</file>
         <file>shader/wire.vert</file>
+        <file>shader/light.frag</file>
     </qresource>
 </RCC>

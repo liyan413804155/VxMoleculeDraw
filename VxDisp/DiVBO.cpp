@@ -28,7 +28,7 @@ DiVBO::~DiVBO()
 void DiVBO::renderSurf(DiShdr& shdr)
 {
     d->m_vbo.bind();
-    shdr.bindVBO();
+    shdr.bindSurfVBO();
     glDrawArrays(GL_TRIANGLES, 0, d->m_count);
     d->m_vbo.release();
 }
@@ -36,7 +36,7 @@ void DiVBO::renderSurf(DiShdr& shdr)
 void DiVBO::renderWire(DiShdr& shdr)
 {
     d->m_vbo.bind();
-    shdr.bindVBO();
+    shdr.bindWireVBO();
     glDrawArrays(GL_LINES, 0, d->m_count);
     d->m_vbo.release();
 }

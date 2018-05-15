@@ -66,6 +66,9 @@
     <None Include="shader\wire.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shader\light.frag">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="shader.qrc">

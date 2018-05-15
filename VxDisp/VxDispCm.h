@@ -29,10 +29,20 @@ enum VeShdrType
     DiShdrLast
 };
 
+struct DiLightAt
+{
+    float       ambient;
+    QVector3D   color;
+    QVector3D   direction;
+};
+
 struct DiSurfAt
 {
     QVector3D front_color;
     QVector3D back_color;
+    float diffuse;
+    float specular;
+    float shininess;
 };
 
 struct DiWireAt

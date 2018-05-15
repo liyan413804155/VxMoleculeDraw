@@ -15,8 +15,17 @@ public:
         : QOpenGLWidget(parent)
     {
         m_beginRot = false;
+
         m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
         m_surfAt.back_color = QVector3D(0.0f, 1.0f, 0.0f);
+        m_surfAt.diffuse = 0.1;
+        m_surfAt.specular = 0.4;
+        m_surfAt.shininess = 10;
+
+        m_lightAt.ambient = 0.5;
+        m_lightAt.color = QVector3D(1.0f, 1.0f, 1.0f);
+        m_lightAt.direction = QVector3D(1.0f, 1.0f, 1.0f);
+
         m_wireAt.color = QVector3D(0.0f, 0.0f, 0.0f);
     }
 
@@ -35,32 +44,66 @@ private:
     {
         initializeOpenGLFunctions();
 
+        QVector3D A(0.0f, 0.0f,0.0f);
+        QVector3D B(0.0f, 1.0f, 0.0f);
+        QVector3D C(1.0f, 0.0f, 0.0f);
+        QVector3D D(0.0f, 0.0f, 1.0f);
+
         QVector<QVector3D> faceVertex;
-        faceVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
-        faceVertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
-        faceVertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
+        faceVertex.push_back(A);
+        faceVertex.push_back(QVector3D(0.0f, 0.0f, -1.0f));
+        faceVertex.push_back(B);
+        faceVertex.push_back(QVector3D(0.0f, 0.0f, -1.0f));
+        faceVertex.push_back(C);
+        faceVertex.push_back(QVector3D(0.0f, 0.0f, -1.0f));
+        faceVertex.push_back(A);
+        faceVertex.push_back(QVector3D(0.0f, -1.0f, -0.0f));
+        faceVertex.push_back(C);
+        faceVertex.push_back(QVector3D(0.0f, -1.0f, -0.0f));
+        faceVertex.push_back(D);
+        faceVertex.push_back(QVector3D(0.0f, -1.0f, -0.0f));
+        faceVertex.push_back(A);
+        faceVertex.push_back(QVector3D(-1.0f, 0.0f, -0.0f));
+        faceVertex.push_back(D);
+        faceVertex.push_back(QVector3D(-1.0f, 0.0f, -0.0f));
+        faceVertex.push_back(B);
+        faceVertex.push_back(QVector3D(-1.0f, 0.0f, -0.0f));
+        faceVertex.push_back(B);
+        faceVertex.push_back(QVector3D(0.0f, 0.0f, 1.0f));
+        faceVertex.push_back(D);
+        faceVertex.push_back(QVector3D(0.0f, 1.0f, 0.0f));
+        faceVertex.push_back(C);
+        faceVertex.push_back(QVector3D(1.0f, 1.0f, 0.0f));
 
         m_faceVbo = new DiVBO(faceVertex);
 
         QVector<QVector3D> wireVertex;
-        wireVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
-        wireVertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
-        wireVertex.push_back(QVector3D(0.0f, 0.5f, 0.0f));
-        wireVertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
-        wireVertex.push_back(QVector3D(0.5f, 0.0f, 0.0f));
-        wireVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
+        wireVertex.push_back(A);
+        wireVertex.push_back(B);
+        wireVertex.push_back(A);
+        wireVertex.push_back(C);
+        wireVertex.push_back(A);
+        wireVertex.push_back(D);
+        wireVertex.push_back(B);
+        wireVertex.push_back(C);
+        wireVertex.push_back(B);
+        wireVertex.push_back(D);
+        wireVertex.push_back(C);
+        wireVertex.push_back(D);
 
-        m_wireVbo = new DiVBO(faceVertex);
+        m_wireVbo = new DiVBO(wireVertex);
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+        glEnable(GL_DEPTH_TEST);
     }
 
     virtual void paintGL()override
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_shdr.active(DiShdrFace);
 
+        m_shdr.setLightAt(m_lightAt);
         m_shdr.setSurfAt(m_surfAt);
         m_shdr.setProjMat(m_view.getProjMat());
         m_shdr.setViewMat(m_view.getViewMat());
@@ -123,6 +166,8 @@ private:
 
     DiVBO *m_wireVbo;
     DiWireAt m_wireAt;
+
+    DiLightAt m_lightAt;
 
     DiShdr m_shdr;
 
