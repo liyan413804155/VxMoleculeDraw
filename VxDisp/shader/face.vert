@@ -10,7 +10,7 @@ out vec3 VvNormal;
 
 void main()
 {
-    VvNormal = VxNormal;
+    VvNormal = mat3(VxViewMat) * VxNormal;
 
     gl_Position = VxProjMat * VxViewMat * vec4(VxVertex, 1.0);    
 }

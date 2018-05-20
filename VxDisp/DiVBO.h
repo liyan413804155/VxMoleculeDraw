@@ -6,7 +6,7 @@
 class VXDISP_EXPORT DiVBO
 {
 public:
-    DiVBO(QVector<QVector3D>& vertex);
+    DiVBO(QVector<QVector3D>& vertex, QVector<short>& index);
     ~DiVBO();
 
     void renderSurf(DiShdr& shdr);
