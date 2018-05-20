@@ -132,7 +132,7 @@ private:
 
     virtual void mousePressEvent(QMouseEvent *event)
     {
-        m_rotViewSrc = QPointF(event->localPos().x(), m_view.getHeight() - event->localPos().y());
+        m_rotViewSrc = event->localPos();
 
         m_rotViewMat = m_view.getViewMat();
 
@@ -145,7 +145,7 @@ private:
     {
         if (m_beginRot)
         {
-            QPointF rotViewDes = QPointF(event->localPos().x(), m_view.getHeight() - event->localPos().y());
+            QPointF rotViewDes = event->localPos();
 
             m_view.rotate(m_rotViewMat, m_rotViewSrc, rotViewDes);
 

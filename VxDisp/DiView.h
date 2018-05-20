@@ -10,6 +10,9 @@ public:
     void rotate(const QMatrix4x4& viewMat, const QPointF& srcDev, const QPointF& desDev);
 
 public:
+    void dev2Wld(const QPointF& pntDev, QVector3D& pntWld, QVector3D& dirWld)const;
+
+public:
     QMatrix4x4 getViewMat()const;
     QMatrix4x4 getProjMat()const;
     float getHeight()const;

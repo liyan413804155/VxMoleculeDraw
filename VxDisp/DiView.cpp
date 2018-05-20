@@ -90,7 +90,7 @@ const QPointF& desDev       /* i: rotate destination point in device coordinate 
     float r = 180.0f * (d->m_extent * d->m_rotTurns) / 
         (d->m_wDev  > d->m_hDev ? d->m_wDev : d->m_hDev);
     float yAngle =  (desDev.x() - srcDev.x()) * r;
-    float xAngle = -(desDev.y() - srcDev.y()) * r;
+    float xAngle =  (desDev.y() - srcDev.y()) * r;
 
     /* projection view transform */
     QMatrix4x4 projView = getProjMat() * viewMat;
@@ -100,6 +100,17 @@ const QPointF& desDev       /* i: rotate destination point in device coordinate 
     /* update original view matrix */
     QMatrix4x4 inv = getProjMat().inverted();
     d->m_viewMat = inv * projView;
+}
+
+void DiView::dev2Wld(const QPointF& pntDev, QVector3D& pntWld, QVector3D& dirWld) const
+{
+    QMatrix4x4 pipeInv = (getProjMat() * getViewMat()).inverted();
+
+    dirWld = (pipeInv * QVector4D(0.0f, 0.0f, 1.0f, 0.0f)).toVector3D();
+
+    QVector4D projPnt(2 * pntDev.x() / d->m_wDev - 1.0f, 1.0f - 2 * pntDev.y() / d->m_hDev, 0.0, 1.0f);
+
+    pntWld = (pipeInv * projPnt).toVector3D();
 }
 
 QMatrix4x4 DiView::getProjMat()const

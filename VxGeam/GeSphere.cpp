@@ -66,7 +66,20 @@ QMatrix4x4 GeSphere::getXform()const
 
 bool GeSphere::isect(const QVector3D& org, const QVector3D& dir, float& param)const
 {
-    return false;
+    QVector3D off = org - d->m_origal;
+
+    float a = dir.x() * dir.x() + dir.y() * dir.y() + dir.z() * dir.z();
+    float b = 2 * (dir.x() * off.x() + dir.y() * off.y() + dir.z() * off.z());
+    float c = off.x() * off.x() + off.y() * off.y() + off.z() * off.z() - d->m_raduis * d->m_raduis;
+
+    float delta = b * b - 4 * a * c;
+
+    if (delta < 0)
+        return false;
+
+    param = (-b + sqrt(delta)) / (2 * a);
+
+    return true;
 }
 
 static QVector3D GeSpherePoint(float alpha, float beta)

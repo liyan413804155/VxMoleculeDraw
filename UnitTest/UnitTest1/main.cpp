@@ -29,11 +29,18 @@ public:
 
         /*m_wireAt.color = QVector3D(0.0f, 0.0f, 0.0f);*/
         m_shpere = new GeSphere(QVector3D(), 1.0f);
+
+        m_isect = false;
+
+        m_faceVbo = nullptr;
+
+        setMouseTracking(true);
     }
 
     ~MyDrawing()
     {
         delete m_faceVbo;
+        delete m_shpere;
     }
 
 private:
@@ -53,8 +60,8 @@ private:
         m_faceVbo = new DiVBO(faceVertex, faceIndex);
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
         glEnable(GL_DEPTH_TEST);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
     virtual void paintGL()override
@@ -92,7 +99,7 @@ private:
 
     virtual void mousePressEvent(QMouseEvent *event)
     {
-        m_rotViewSrc = QPointF(event->localPos().x(), m_view.getHeight() - event->localPos().y());
+        m_rotViewSrc = event->localPos();
 
         m_rotViewMat = m_view.getViewMat();
 
@@ -105,11 +112,33 @@ private:
     {
         if (m_beginRot)
         {
-            QPointF rotViewDes = QPointF(event->localPos().x(), m_view.getHeight() - event->localPos().y());
 
-            m_view.rotate(m_rotViewMat, m_rotViewSrc, rotViewDes);
+            m_view.rotate(m_rotViewMat, m_rotViewSrc, event->localPos());
 
             update();
+        }
+        else
+        {
+            QVector3D pnt, dir;
+            float param;
+
+            m_view.dev2Wld(event->localPos(), pnt, dir);
+
+            bool isect = m_shpere->isect(pnt, dir, param);
+            if (isect)
+            {
+                m_surfAt.front_color = QVector3D(1.0f, 1.0f, 0.0f);
+            }
+            else
+            {
+                m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
+            }
+
+            if (isect != m_isect)
+            {
+                m_isect = isect;
+                update();
+            }
         }
 
         __super::mouseMoveEvent(event);
@@ -125,6 +154,7 @@ private:
     DiVBO *m_faceVbo;
     DiSurfAt m_surfAt;
 
+    bool m_isect;
 //     DiVBO *m_wireVbo;
 //     DiWireAt m_wireAt;
 
