@@ -12,6 +12,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest0", "UnitTest\UnitT
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VxDisp", "VxDisp\VxDisp.vcxproj", "{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VxGeam", "VxGeam\VxGeam.vcxproj", "{3D0F475F-A906-47AE-ADED-E8C1E09ACF21}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest\UnitTest1\UnitTest1.vcxproj", "{9846C095-7ABE-47BA-87CB-954E7962F973}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D0F475F-A906-47AE-ADED-E8C1E09ACF21} = {3D0F475F-A906-47AE-ADED-E8C1E09ACF21}
+		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF} = {290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -26,11 +34,20 @@ Global
 		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Debug|x86.Build.0 = Debug|Win32
 		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Release|x86.ActiveCfg = Release|Win32
 		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}.Release|x86.Build.0 = Release|Win32
+		{3D0F475F-A906-47AE-ADED-E8C1E09ACF21}.Debug|x86.ActiveCfg = Debug|Win32
+		{3D0F475F-A906-47AE-ADED-E8C1E09ACF21}.Debug|x86.Build.0 = Debug|Win32
+		{3D0F475F-A906-47AE-ADED-E8C1E09ACF21}.Release|x86.ActiveCfg = Release|Win32
+		{3D0F475F-A906-47AE-ADED-E8C1E09ACF21}.Release|x86.Build.0 = Release|Win32
+		{9846C095-7ABE-47BA-87CB-954E7962F973}.Debug|x86.ActiveCfg = Debug|Win32
+		{9846C095-7ABE-47BA-87CB-954E7962F973}.Debug|x86.Build.0 = Debug|Win32
+		{9846C095-7ABE-47BA-87CB-954E7962F973}.Release|x86.ActiveCfg = Release|Win32
+		{9846C095-7ABE-47BA-87CB-954E7962F973}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B12702AD-ABFB-343A-A199-8E24837244A3} = {D5F166EF-EE90-405D-824D-EDB2AD760499}
+		{9846C095-7ABE-47BA-87CB-954E7962F973} = {D5F166EF-EE90-405D-824D-EDB2AD760499}
 	EndGlobalSection
 EndGlobal
