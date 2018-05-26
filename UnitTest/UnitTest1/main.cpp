@@ -28,7 +28,7 @@ public:
         m_lightAt.direction = QVector3D(1.0f, 1.0f, 1.0f);
 
         /*m_wireAt.color = QVector3D(0.0f, 0.0f, 0.0f);*/
-        m_shpere = new GeSphere(QVector3D(), 1.0f);
+        m_geam = new GeCylinder(QMatrix4x4(), 1.0f, 1.0);
 
         m_isect = false;
 
@@ -40,7 +40,7 @@ public:
     ~MyDrawing()
     {
         delete m_faceVbo;
-        delete m_shpere;
+        delete m_geam;
     }
 
 private:
@@ -56,7 +56,7 @@ private:
         QVector<QVector3D> faceVertex;
         QVector<short> faceIndex;
 
-        m_shpere->triFace(faceVertex, faceIndex, 10, 10);
+        m_geam->triFace(faceVertex, faceIndex, 50, 4);
         m_faceVbo = new DiVBO(faceVertex, faceIndex);
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
@@ -124,7 +124,7 @@ private:
 
             m_view.dev2Wld(event->localPos(), pnt, dir);
 
-            bool isect = m_shpere->isect(pnt, dir, param);
+            bool isect = m_geam->isect(pnt, dir, param);
             if (isect)
             {
                 m_surfAt.front_color = QVector3D(1.0f, 1.0f, 0.0f);
@@ -150,7 +150,7 @@ private:
     }
 
 private:
-    GeSphere * m_shpere;
+    GeCylinder * m_geam;
     DiVBO *m_faceVbo;
     DiSurfAt m_surfAt;
 

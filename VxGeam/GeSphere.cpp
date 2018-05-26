@@ -23,7 +23,7 @@ GeSphere::~GeSphere()
     delete d;
 }
 
-void GeSphere::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace, int xStep, int yStep)
+void GeSphere::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace, int xStep, int yStep) const
 {
     float alphaStep = M_PI / yStep;
     float betaStep = 2 * M_PI / xStep ;

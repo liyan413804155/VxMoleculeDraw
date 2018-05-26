@@ -8,7 +8,7 @@ public:
     ~GeSphere();
 
 public:
-    virtual void triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace, int xStep, int yStep) override;
+    virtual void triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace, int xStep, int yStep) const override;
 
 public:
     virtual QMatrix4x4 getXform()const override;
