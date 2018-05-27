@@ -4,10 +4,9 @@
 class GeConeImpl
 {
 public:
-    QMatrix4x4 m_plane;
-    float m_radius;
-    float m_height;
-    QMatrix4x4 m_xform;
+    float m_radius;     /* cone radius */
+    float m_height;     /* cone height */
+    QMatrix4x4 m_xform; /* cone transform for unit cone */
 };
 
 GeCone::GeCone()
@@ -16,10 +15,14 @@ GeCone::GeCone()
 
 }
 
-GeCone::GeCone(const QMatrix4x4& plane, float r, float h)
+GeCone::GeCone
+(
+const QMatrix4x4& plane,    /* i: cone bottom plane */
+float r,    /* i: cone radius */
+float h     /* i: cone height */
+)
 {
     d = new GeConeImpl;
-    d->m_plane = plane;
     d->m_radius = r;
     d->m_height = h;
 
@@ -33,7 +36,13 @@ GeCone::~GeCone()
     delete d;
 }
 
-void GeCone::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace, int xStep, int yStep) const
+void GeCone::triFace
+(
+QVector<QVector3D>& vertexFace, /* o: vertex data */
+QVector<short>& indexFace,      /* o: vertex index */
+int xStep,  /* i :triangulate x step */
+int yStep   /* i: triangulate y step */
+) const
 {
     float heightStep = 1.0f / yStep;
     float alphaStep = 2 * M_PI / xStep;
@@ -102,7 +111,17 @@ QMatrix4x4 GeCone::getXform() const
     return d->m_xform;
 }
 
-bool GeCone::isect(const QVector3D& org, const QVector3D& dir, float& param) const
+bool GeCone::isect
+(
+const QVector3D& org,   /* i: ray original */
+const QVector3D& dir,   /* i: ray direction vector*/
+float& param            /* o: intersection parameter */
+) const
+/*
+Return value
+    true  : intersection
+    false : no intersection
+ */
 {
     QMatrix4x4 xformInv = d->m_xform.inverted();
     QVector3D mOrg = (xformInv * QVector4D(org, 1.0f)).toVector3D();

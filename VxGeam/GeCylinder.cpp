@@ -4,10 +4,9 @@
 class GeCylinderImpl
 {
 public:
-    QMatrix4x4 m_plane;
-    float m_radius;
-    float m_height;
-    QMatrix4x4 m_xform;
+    float m_radius;     /* cone cylinder */
+    float m_height;     /* cone cylinder */
+    QMatrix4x4 m_xform; /* cone transform for unit cylinder */
 };
 
 GeCylinder::GeCylinder() 
@@ -19,7 +18,6 @@ GeCylinder::GeCylinder()
 GeCylinder::GeCylinder(const QMatrix4x4& plane, float r, float h)
 {
     d = new GeCylinderImpl;
-    d->m_plane = plane;
     d->m_radius = r;
     d->m_height = h;
 
@@ -33,7 +31,13 @@ GeCylinder::~GeCylinder()
     delete d;
 }
 
-void GeCylinder::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace, int xStep, int yStep) const
+void GeCylinder::triFace
+(
+QVector<QVector3D>& vertexFace, /* o: vertex data */
+QVector<short>& indexFace,      /* o: vertex index */
+int xStep,  /* i :triangulate x step */
+int yStep   /* i: triangulate y step */
+) const
 {
     float heightStep = 1.0f / yStep;
     float alphaStep = 2 * M_PI / xStep;
@@ -41,7 +45,7 @@ void GeCylinder::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFa
     QVector3D org = d->m_xform.column(3).toVector3D();
     QVector3D dir = d->m_xform.column(2).toVector3D().normalized();
 
-    /* [1] */
+    /* [1] side face */
     GeMeshTri(xStep, yStep, vertexFace, indexFace,
         [&](int i, int j)->QVector3D
     {
@@ -54,7 +58,7 @@ void GeCylinder::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFa
         return (d->m_xform * QVector4D(normal, 0.0f)).toVector3D().normalized();
     });
 
-    /* [2] */
+    /* [2] bottom face */
     for (int i = 0; i <= xStep; i++)
     {
         QVector3D vertex(std::cos(i * alphaStep), std::sin(i * alphaStep), 0.0f);
@@ -77,7 +81,7 @@ void GeCylinder::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFa
         indexFace.push_back(bottomEdgeIndex + i);
     }
 
-    /* [3] */
+    /* [3] top face */
     for (int i = 0; i <= xStep; i++)
     {
         QVector3D vertex(std::cos(i * alphaStep), std::sin(i * alphaStep), 1.0f);
@@ -106,7 +110,17 @@ QMatrix4x4 GeCylinder::getXform() const
     return d->m_xform;
 }
 
-bool GeCylinder::isect(const QVector3D& org, const QVector3D& dir, float& param) const
+bool GeCylinder::isect
+(
+const QVector3D& org,   /* i: ray original */
+const QVector3D& dir,   /* i: ray direction vector*/
+float& param            /* o: intersection parameter */
+) const
+/*
+Return value
+    true  : intersection
+    false : no intersection
+*/
 {
     QMatrix4x4 xformInv = d->m_xform.inverted();
     QVector3D mOrg = (xformInv * QVector4D(org, 1.0f)).toVector3D();
