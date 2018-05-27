@@ -28,7 +28,7 @@ public:
         m_lightAt.direction = QVector3D(1.0f, 1.0f, 1.0f);
 
         /*m_wireAt.color = QVector3D(0.0f, 0.0f, 0.0f);*/
-        m_geam = new GeCylinder(QMatrix4x4(), 1.0f, 1.0);
+        m_geam = new GeCone(QMatrix4x4(), 1.0f, 1.0);
 
         m_isect = false;
 
@@ -62,6 +62,7 @@ private:
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
         glEnable(GL_DEPTH_TEST);
+        /*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
     }
 
     virtual void paintGL()override
@@ -150,7 +151,7 @@ private:
     }
 
 private:
-    GeCylinder * m_geam;
+    VxGeam * m_geam;
     DiVBO *m_faceVbo;
     DiSurfAt m_surfAt;
 
