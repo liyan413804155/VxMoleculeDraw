@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include <QMainWindow>
+#include <QMap>
 #include <QOpenGLWidget>
 #include <QVector>
 #include <QVector3D>
@@ -13,7 +14,7 @@ struct MyGeam
 {
     VxGeam *pGeam;
     DiSurfAt at;
-    bool redraw;
+    bool pick;
 };
 
 class MyDrawing : public QOpenGLWidget, public QOpenGLFunctions
@@ -28,8 +29,9 @@ public:
         m_lightAt.color = QVector3D(1.0f, 1.0f, 1.0f);
         m_lightAt.direction = QVector3D(1.0f, 1.0f, 1.0f);
 
+        m_hiColor = QVector3D(1.0f, 1.0f, 0.0f);
+
         DiSurfAt at;
-        at.front_color = QVector3D(1.0f, 0.0f, 0.0f);
         at.back_color = QVector3D(0.0f, 1.0f, 0.0f);
         at.diffuse = 0.5f;
         at.specular = 0.8f;
@@ -41,20 +43,24 @@ public:
 
         plane.setToIdentity();
         plane.translate(2.0f, 0.0f, 0.0f);
-        m_geam[0].pGeam = new GeCone(plane, 1.0f, 1.0f);
+        m_geam[0].pGeam = new GeCone(plane, 0.3f, 1.0f);
         m_geam[0].at = at;
+        m_geam[0].at.front_color = QVector3D(1.0f, 0.0f, 0.0f);
+        m_geam[0].pick = false;
 
-        m_geam[1].pGeam = new GeSphere(QVector3D(), 1.0f);
+        m_geam[1].pGeam = new GeSphere(QVector3D(), 0.3f);
         m_geam[1].at = at;
-        m_geam[1].at.front_color = QVector3D(1.0f, 1.0f, 0.0f);
+        m_geam[1].at.front_color = QVector3D(0.0f, 1.0f, 0.0f);
+        m_geam[1].pick = false;
 
         plane.setToIdentity();
         plane.translate(-2.0f, 0.0f, 0.0f);
-        m_geam[2].pGeam = new GeCylinder(plane, 1.0f, 1.0f);
+        m_geam[2].pGeam = new GeCylinder(plane, 0.3f, 1.0f);
         m_geam[2].at = at;
-        m_geam[2].at.front_color = QVector3D(1.0f, 0.0f, 1.0f);
+        m_geam[2].at.front_color = QVector3D(0.0f, 0.0f, 1.0f);
+        m_geam[2].pick = false;
 
-        /*setMouseTracking(true);*/
+        setMouseTracking(true);
     }
 
     ~MyDrawing()
@@ -97,7 +103,6 @@ private:
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
         glEnable(GL_DEPTH_TEST);
-        /*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
     }
 
     virtual void paintGL()override
@@ -112,7 +117,16 @@ private:
 
         for (int i = 0; i < m_geam.size(); i++)
         {
-            m_shdr.setSurfAt(m_geam[i].at);
+            if (m_geam[i].pick)
+            {
+                DiSurfAt at = m_geam[i].at;
+                at.front_color = m_hiColor;
+                m_shdr.setSurfAt(at);
+            }
+            else
+            {
+                m_shdr.setSurfAt(m_geam[i].at);
+            }
             m_shdr.setModelMat(m_geam[i].pGeam->getXform());
             m_faceVbo[m_geam[i].pGeam->type()]->renderSurf(m_shdr);
         }
@@ -149,29 +163,45 @@ private:
 
             update();
         }
-//         else
-//         {
-//             QVector3D pnt, dir;
-//             float param;
-// 
-//             m_view.dev2Wld(event->localPos(), pnt, dir);
-// 
-//             bool isect = m_geam->isect(pnt, dir, param);
-//             if (isect)
-//             {
-//                 m_surfAt.front_color = QVector3D(1.0f, 1.0f, 0.0f);
-//             }
-//             else
-//             {
-//                 m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
-//             }
-// 
-//             if (isect != m_isect)
-//             {
-//                 m_isect = isect;
-//                 update();
-//             }
-//         }
+        else
+        {
+            QVector3D pnt, dir;
+
+            m_view.dev2Wld(event->localPos(), pnt, dir);
+
+            QMap<float, MyGeam*> isect;
+            QVector<bool> savePick(m_geam.size());
+
+            for (int i = 0; i < m_geam.size(); i++)
+            {
+                float param;
+                if (m_geam[i].pGeam->isect(pnt, dir, param))
+                {
+                    isect[param] = &m_geam[i];
+                }
+                savePick[i] = m_geam[i].pick;
+            }
+
+            for (int i = 0; i < m_geam.size(); i++)
+            {
+                m_geam[i].pick = false;
+            }
+
+            if (isect.size() > 0)
+            {
+                auto it = isect.begin();
+                (*it)->pick = true;
+            }
+
+            for (int i = 0; i < m_geam.size(); i++)
+            {
+                if (m_geam[i].pick != savePick[i])
+                {
+                    update();
+                    break;
+                }
+            }
+        }
 
         __super::mouseMoveEvent(event);
     }
@@ -182,6 +212,8 @@ private:
     }
 
 private:
+    QVector3D m_hiColor;
+
     QVector<MyGeam> m_geam;
     DiVBO *m_faceVbo[VeGeTypeLast];
     DiLightAt m_lightAt;

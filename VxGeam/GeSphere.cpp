@@ -22,6 +22,7 @@ GeSphere::GeSphere(const QVector3D& org, float r)
     d = new GeSphereImpl;
     d->m_origal = org;
     d->m_raduis = r;
+    d->m_xform.scale(r, r, r);
     d->m_xform.translate(org);
 }
 
@@ -68,7 +69,7 @@ void GeSphere::triFace(QVector<QVector3D>& vertexFace, QVector<short>& indexFace
 
 QMatrix4x4 GeSphere::getXform()const
 {
-    return QMatrix4x4();
+    return d->m_xform;
 }
 
 bool GeSphere::isect(const QVector3D& org, const QVector3D& dir, float& param)const
