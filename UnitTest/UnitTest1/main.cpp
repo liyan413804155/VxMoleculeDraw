@@ -9,6 +9,13 @@
 #include "VxDisp.h"
 #include "VxGeam.h"
 
+struct MyGeam
+{
+    VxGeam *pGeam;
+    DiSurfAt at;
+    bool redraw;
+};
+
 class MyDrawing : public QOpenGLWidget, public QOpenGLFunctions
 {
 public:
@@ -17,30 +24,43 @@ public:
     {
         m_beginRot = false;
 
-        m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
-        m_surfAt.back_color = QVector3D(0.0f, 1.0f, 0.0f);
-        m_surfAt.diffuse = 0.1;
-        m_surfAt.specular = 0.4;
-        m_surfAt.shininess = 10;
-
         m_lightAt.ambient = 0.5;
         m_lightAt.color = QVector3D(1.0f, 1.0f, 1.0f);
         m_lightAt.direction = QVector3D(1.0f, 1.0f, 1.0f);
 
-        /*m_wireAt.color = QVector3D(0.0f, 0.0f, 0.0f);*/
-        m_geam = new GeCone(QMatrix4x4(), 1.0f, 1.0);
+        DiSurfAt at;
+        at.front_color = QVector3D(1.0f, 0.0f, 0.0f);
+        at.back_color = QVector3D(0.0f, 1.0f, 0.0f);
+        at.diffuse = 0.5f;
+        at.specular = 0.8f;
+        at.shininess = 10;
 
-        m_isect = false;
+        m_geam.resize(3);
 
-        m_faceVbo = nullptr;
+        QMatrix4x4 plane;
 
-        setMouseTracking(true);
+        plane.setToIdentity();
+        plane.translate(2.0f, 0.0f, 0.0f);
+        m_geam[0].pGeam = new GeCone(plane, 1.0f, 1.0f);
+        m_geam[0].at = at;
+
+        m_geam[1].pGeam = new GeSphere(QVector3D(), 1.0f);
+        m_geam[1].at = at;
+        m_geam[1].at.front_color = QVector3D(1.0f, 1.0f, 0.0f);
+
+        plane.setToIdentity();
+        plane.translate(-2.0f, 0.0f, 0.0f);
+        m_geam[2].pGeam = new GeCylinder(plane, 1.0f, 1.0f);
+        m_geam[2].at = at;
+        m_geam[2].at.front_color = QVector3D(1.0f, 0.0f, 1.0f);
+
+        /*setMouseTracking(true);*/
     }
 
     ~MyDrawing()
     {
-        delete m_faceVbo;
-        delete m_geam;
+
+
     }
 
 private:
@@ -56,8 +76,23 @@ private:
         QVector<QVector3D> faceVertex;
         QVector<short> faceIndex;
 
-        m_geam->triFace(faceVertex, faceIndex, 50, 4);
-        m_faceVbo = new DiVBO(faceVertex, faceIndex);
+        faceVertex.clear();
+        faceIndex.clear();
+        GeSphere sphere;
+        sphere.triFace(faceVertex, faceIndex, 50, 50);
+        m_faceVbo[VeGeSphere] = new DiVBO(faceVertex, faceIndex);
+
+        faceVertex.clear();
+        faceIndex.clear();
+        GeCylinder cylinder;
+        cylinder.triFace(faceVertex, faceIndex, 50, 4);
+        m_faceVbo[VeGeCylinder] = new DiVBO(faceVertex, faceIndex);
+
+        faceVertex.clear();
+        faceIndex.clear();
+        GeCone cone;
+        cone.triFace(faceVertex, faceIndex, 50, 4);
+        m_faceVbo[VeGeCone] = new DiVBO(faceVertex, faceIndex);
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
@@ -72,19 +107,15 @@ private:
         m_shdr.active(DiShdrFace);
 
         m_shdr.setLightAt(m_lightAt);
-        m_shdr.setSurfAt(m_surfAt);
         m_shdr.setProjMat(m_view.getProjMat());
         m_shdr.setViewMat(m_view.getViewMat());
 
-        m_faceVbo->renderSurf(m_shdr);
-
-//         m_shdr.active(DiShdrWire);
-// 
-//         m_shdr.setWireAt(m_wireAt);
-//         m_shdr.setProjMat(m_view.getProjMat());
-//         m_shdr.setViewMat(m_view.getViewMat());
-// 
-//         m_wireVbo->renderWire(m_shdr);
+        for (int i = 0; i < m_geam.size(); i++)
+        {
+            m_shdr.setSurfAt(m_geam[i].at);
+            m_shdr.setModelMat(m_geam[i].pGeam->getXform());
+            m_faceVbo[m_geam[i].pGeam->type()]->renderSurf(m_shdr);
+        }
     }
 
     virtual void wheelEvent(QWheelEvent *event)
@@ -118,29 +149,29 @@ private:
 
             update();
         }
-        else
-        {
-            QVector3D pnt, dir;
-            float param;
-
-            m_view.dev2Wld(event->localPos(), pnt, dir);
-
-            bool isect = m_geam->isect(pnt, dir, param);
-            if (isect)
-            {
-                m_surfAt.front_color = QVector3D(1.0f, 1.0f, 0.0f);
-            }
-            else
-            {
-                m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
-            }
-
-            if (isect != m_isect)
-            {
-                m_isect = isect;
-                update();
-            }
-        }
+//         else
+//         {
+//             QVector3D pnt, dir;
+//             float param;
+// 
+//             m_view.dev2Wld(event->localPos(), pnt, dir);
+// 
+//             bool isect = m_geam->isect(pnt, dir, param);
+//             if (isect)
+//             {
+//                 m_surfAt.front_color = QVector3D(1.0f, 1.0f, 0.0f);
+//             }
+//             else
+//             {
+//                 m_surfAt.front_color = QVector3D(1.0f, 0.0f, 0.0f);
+//             }
+// 
+//             if (isect != m_isect)
+//             {
+//                 m_isect = isect;
+//                 update();
+//             }
+//         }
 
         __super::mouseMoveEvent(event);
     }
@@ -151,20 +182,15 @@ private:
     }
 
 private:
-    VxGeam * m_geam;
-    DiVBO *m_faceVbo;
-    DiSurfAt m_surfAt;
-
-    bool m_isect;
-//     DiVBO *m_wireVbo;
-//     DiWireAt m_wireAt;
-
+    QVector<MyGeam> m_geam;
+    DiVBO *m_faceVbo[VeGeTypeLast];
     DiLightAt m_lightAt;
-
     DiShdr m_shdr;
 
+    /* view */
     DiView m_view;
 
+    /* rotate */
     QMatrix4x4 m_rotViewMat;
     QPointF m_rotViewSrc;
     bool m_beginRot;

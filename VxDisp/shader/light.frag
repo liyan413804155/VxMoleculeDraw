@@ -25,7 +25,7 @@ in vec3 eyeDir
     float dotE = -dot(faceNormal, normalize(eyeDir + lightDir));
     if (dotE > 0)
     {
-        color += dotE * faceSpecular * pow(dotE, faceShininess);
+        color += dotE * faceSpecular * pow(dotE, faceShininess) * lightColor;
     }
     
     return color;

@@ -11,11 +11,18 @@ public:
     QMatrix4x4 m_xform;
 };
 
+GeSphere::GeSphere()
+    : GeSphere(QVector3D(), 1.0f)
+{
+
+}
+
 GeSphere::GeSphere(const QVector3D& org, float r)
 {
     d = new GeSphereImpl;
     d->m_origal = org;
     d->m_raduis = r;
+    d->m_xform.translate(org);
 }
 
 GeSphere::~GeSphere()
@@ -82,7 +89,14 @@ bool GeSphere::isect(const QVector3D& org, const QVector3D& dir, float& param)co
     return true;
 }
 
+VeGeamType GeSphere::type()const
+{
+    return VeGeSphere;
+}
+
 static QVector3D GeSpherePoint(float alpha, float beta)
 {
     return QVector3D(std::sin(alpha) * std::cos(beta), std::sin(alpha) * std::sin(beta), -std::cos(alpha));
 }
+
+

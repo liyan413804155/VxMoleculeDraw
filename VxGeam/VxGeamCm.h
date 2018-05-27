@@ -29,6 +29,14 @@
 
 void GeMeshTri(int xStep,int yStep,QVector<QVector3D>& faceVertex,QVector<short>& faceIndex,std::function<QVector3D(int i, int j)> funcVertex,std::function<QVector3D(int i, int j)> funcNormal);
 
+enum VeGeamType
+{
+    VeGeSphere,
+    VeGeCylinder,
+    VeGeCone,
+    VeGeTypeLast
+};
+
 class VXGEAM_EXPORT VxGeam
 {
 public:
@@ -41,6 +49,9 @@ public:
 public:
     virtual QMatrix4x4 getXform()const = 0;
     virtual bool isect(const QVector3D& org, const QVector3D& dir, float& param) const = 0;
+
+public:
+    virtual VeGeamType type() const = 0;
 };
 
 

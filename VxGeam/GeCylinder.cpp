@@ -1,8 +1,6 @@
 #include "VxGeamCm.h"
 #include "GeCylinder.h"
 
-
-
 class GeCylinderImpl
 {
 public:
@@ -208,11 +206,9 @@ bool GeCylinder::isect(const QVector3D& org, const QVector3D& dir, float& param)
 
     param = VxMin(params[0], params[1]);
     return true;
+}
 
-    params[0] = -mOrg.z() / mDir.z();
-    params[1] = -(1.0f - mOrg.z()) / mDir.z();
-
-    param = (-b - sqrt(delta)) / (2.0 * a);
-
-    return true;
+VeGeamType GeCylinder::type()const
+{
+    return VeGeCylinder;
 }

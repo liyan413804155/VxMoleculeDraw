@@ -168,3 +168,8 @@ bool GeCone::isect(const QVector3D& org, const QVector3D& dir, float& param) con
 
     return false;
 }
+
+VeGeamType GeCone::type() const
+{
+    return VeGeCone;
+}

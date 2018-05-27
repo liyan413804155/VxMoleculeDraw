@@ -15,6 +15,7 @@ public:
     void setWireAt(const DiWireAt& wireAt);
     void setProjMat(const QMatrix4x4& mat);
     void setViewMat(const QMatrix4x4& mat);
+    void setModelMat(const QMatrix4x4& mat);
 
 private:
     friend class DiShdrImpl;

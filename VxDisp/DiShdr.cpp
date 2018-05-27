@@ -6,6 +6,7 @@
 
 #define VBO_UN_PROJMAT      "VxProjMat"
 #define VBO_UN_VIEWMAT      "VxViewMat"
+#define VBO_UN_MODELMAT     "VxModelMat"
 #define VBO_UN_FRONTCOLOR   "VxColor"
 #define VBO_UN_BACKCOLOR    "VxBackColor"
 #define VBO_UN_SPECULAR     "VxSpecular"
@@ -14,7 +15,6 @@
 #define VBO_UN_AMBIENT      "VxAmbient"
 #define VBO_UN_LIGHTCOLOR   "VxLightColor"
 #define VBO_UN_LIGHTDIR     "VxLightDir"
-
 
 
 struct ShdrFile
@@ -131,4 +131,9 @@ void DiShdr::setProjMat(const QMatrix4x4& mat)
 void DiShdr::setViewMat(const QMatrix4x4& mat)
 {
     d->m_progAct->setUniformValue(VBO_UN_VIEWMAT, mat);
+}
+
+void DiShdr::setModelMat(const QMatrix4x4& mat)
+{
+    d->m_progAct->setUniformValue(VBO_UN_MODELMAT, mat);
 }

@@ -15,6 +15,9 @@ public:
     virtual QMatrix4x4 getXform()const override;
     virtual bool isect(const QVector3D& org, const QVector3D& dir, float& param) const override;
 
+public:
+    virtual VeGeamType type() const override;
+
 private:
     friend class GeConeImpl;
     GeConeImpl *d;
