@@ -153,7 +153,7 @@ Return value
     if (delta < 0.0f)
         return false;
 
-    float params[2] = { (-b - sqrt(delta)) / (2.0 * a), (-b + sqrt(delta)) / (2.0 * a) };
+    float params[2] = { (-b - sqrt(delta)) / (2.0f * a), (-b + sqrt(delta)) / (2.0f * a) };
     QVector3D isectPnt[2] = { mOrg + mDir * params[0], mOrg + mDir * params[1] };
 
     if (isectPnt[0].z() > 1.0f && isectPnt[1].z() > 1.0f)
