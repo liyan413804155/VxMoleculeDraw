@@ -44,6 +44,7 @@ private:
     {
         initializeOpenGLFunctions();
 
+        /* [1] create face VBO */
         QVector<QVector3D> faceVertex;
         faceVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
         faceVertex.push_back(QVector3D(-1.0f, -1.0f, -1.0f).normalized());
@@ -70,28 +71,25 @@ private:
         faceIndex.push_back(1);
         faceIndex.push_back(3);
         faceIndex.push_back(2);
-        m_faceVbo = new DiVBO(faceVertex, faceIndex);
+        m_faceVbo = new DiVBOFace(faceVertex, faceIndex);
 
-        QVector<QVector3D> wireVertex;
-        wireVertex.push_back(QVector3D(0.0f, 0.0f, 0.0f));
-        wireVertex.push_back(QVector3D(0.0f, 1.0f, 0.0f));
-        wireVertex.push_back(QVector3D(1.0f, 0.0f, 0.0f));
-        wireVertex.push_back(QVector3D(0.0f, 0.0f, 1.0f));
+        /* create wire VBO */
+        QVector<QVector3D> wireVertex0;
+        wireVertex0.push_back(QVector3D(0.0f, 0.0f, 0.0f));
+        wireVertex0.push_back(QVector3D(0.0f, 1.0f, 0.0f));
+        wireVertex0.push_back(QVector3D(1.0f, 0.0f, 0.0f));
+        wireVertex0.push_back(QVector3D(0.0f, 0.0f, 1.0f));
+        wireVertex0.push_back(QVector3D(0.0f, 0.0f, 0.0f));
+        wireVertex0.push_back(QVector3D(1.0f, 0.0f, 0.0f));
 
-        QVector<short> wireIndex;
-        wireIndex.push_back(0);
-        wireIndex.push_back(1);
-        wireIndex.push_back(0);
-        wireIndex.push_back(2);
-        wireIndex.push_back(0);
-        wireIndex.push_back(3);
-        wireIndex.push_back(1);
-        wireIndex.push_back(2);
-        wireIndex.push_back(1);
-        wireIndex.push_back(3);
-        wireIndex.push_back(2);
-        wireIndex.push_back(3);
-        m_wireVbo = new DiVBO(wireVertex, wireIndex);
+        QVector<QVector3D> wireVertex1;
+        wireVertex1.push_back(QVector3D(0.0f, 1.0f, 0.0f));
+        wireVertex1.push_back(QVector3D(0.0f, 0.0f, 1.0f));
+
+        QVector<QVector<QVector3D>> wireVertex;
+        wireVertex.push_back(wireVertex0);
+        wireVertex.push_back(wireVertex1);
+        m_wireVbo = new DiVBOWire(wireVertex);
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         glEnable(GL_DEPTH_TEST);
@@ -102,21 +100,19 @@ private:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_shdr.active(DiShdrFace);
-
         m_shdr.setLightAt(m_lightAt);
         m_shdr.setSurfAt(m_surfAt);
         m_shdr.setProjMat(m_view.getProjMat());
         m_shdr.setViewMat(m_view.getViewMat());
-
-        m_faceVbo->renderSurf(m_shdr);
+        m_shdr.setModelMat(QMatrix4x4());
+        m_faceVbo->render(m_shdr);
 
         m_shdr.active(DiShdrWire);
-
         m_shdr.setWireAt(m_wireAt);
         m_shdr.setProjMat(m_view.getProjMat());
         m_shdr.setViewMat(m_view.getViewMat());
-
-        m_wireVbo->renderWire(m_shdr);
+        m_shdr.setModelMat(QMatrix4x4());
+        m_wireVbo->render(m_shdr);
     }
 
     virtual void wheelEvent(QWheelEvent *event)
@@ -161,10 +157,10 @@ private:
     }
 
 private:
-    DiVBO *m_faceVbo;
+    DiVBOFace *m_faceVbo;
     DiSurfAt m_surfAt;
 
-    DiVBO *m_wireVbo;
+    DiVBOWire *m_wireVbo;
     DiWireAt m_wireAt;
 
     DiLightAt m_lightAt;

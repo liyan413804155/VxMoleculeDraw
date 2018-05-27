@@ -86,19 +86,19 @@ private:
         faceIndex.clear();
         GeSphere sphere;
         sphere.triFace(faceVertex, faceIndex, 50, 50);
-        m_faceVbo[VeGeSphere] = new DiVBO(faceVertex, faceIndex);
+        m_faceVbo[VeGeSphere] = new DiVBOFace(faceVertex, faceIndex);
 
         faceVertex.clear();
         faceIndex.clear();
         GeCylinder cylinder;
         cylinder.triFace(faceVertex, faceIndex, 50, 4);
-        m_faceVbo[VeGeCylinder] = new DiVBO(faceVertex, faceIndex);
+        m_faceVbo[VeGeCylinder] = new DiVBOFace(faceVertex, faceIndex);
 
         faceVertex.clear();
         faceIndex.clear();
         GeCone cone;
         cone.triFace(faceVertex, faceIndex, 50, 4);
-        m_faceVbo[VeGeCone] = new DiVBO(faceVertex, faceIndex);
+        m_faceVbo[VeGeCone] = new DiVBOFace(faceVertex, faceIndex);
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
@@ -128,7 +128,7 @@ private:
                 m_shdr.setSurfAt(m_geam[i].at);
             }
             m_shdr.setModelMat(m_geam[i].pGeam->getXform());
-            m_faceVbo[m_geam[i].pGeam->type()]->renderSurf(m_shdr);
+            m_faceVbo[m_geam[i].pGeam->type()]->render(m_shdr);
         }
     }
 
@@ -215,7 +215,7 @@ private:
     QVector3D m_hiColor;
 
     QVector<MyGeam> m_geam;
-    DiVBO *m_faceVbo[VeGeTypeLast];
+    DiVBOFace *m_faceVbo[VeGeTypeLast];
     DiLightAt m_lightAt;
     DiShdr m_shdr;
 

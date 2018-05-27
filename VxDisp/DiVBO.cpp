@@ -1,10 +1,10 @@
 #include "VxDispCm.h"
 #include "DiVBO.h"
 
-class DiVBOImpl
+class DiVBOFaceImpl
 {
 public:
-    DiVBOImpl()
+    DiVBOFaceImpl()
         : m_index(QOpenGLBuffer::IndexBuffer)
     {
 
@@ -15,9 +15,9 @@ public:
     int m_count;
 };
 
-DiVBO::DiVBO(QVector<QVector3D>& vertex, QVector<short>& index)
+DiVBOFace::DiVBOFace(QVector<QVector3D>& vertex, QVector<short>& index)
 {
-    d = new DiVBOImpl();
+    d = new DiVBOFaceImpl();
 
     d->m_vertex.create();
     d->m_vertex.bind();
@@ -33,12 +33,12 @@ DiVBO::DiVBO(QVector<QVector3D>& vertex, QVector<short>& index)
     d->m_count = index.size();
 }
 
-DiVBO::~DiVBO()
+DiVBOFace::~DiVBOFace()
 {
     delete d;
 }
 
-void DiVBO::renderSurf(DiShdr& shdr)
+void DiVBOFace::render(DiShdr& shdr)
 {
     d->m_vertex.bind();
     d->m_index.bind();
@@ -48,12 +48,42 @@ void DiVBO::renderSurf(DiShdr& shdr)
     d->m_index.release();
 }
 
-void DiVBO::renderWire(DiShdr& shdr)
+class DiVBOWireImpl
 {
-    d->m_vertex.bind();
-    d->m_index.bind();
-    shdr.bindWireVBO();
-    glDrawElements(GL_LINES, d->m_count, GL_UNSIGNED_SHORT, 0);
-    d->m_vertex.release();
-    d->m_index.release();
+public:
+    QVector<QOpenGLBuffer>  m_vertex;
+    QVector<int>            m_count;
+};
+
+DiVBOWire::DiVBOWire(QVector<QVector<QVector3D>>& vertex)
+{
+    d = new DiVBOWireImpl;
+    d->m_vertex.resize(vertex.size());
+    d->m_count.resize(vertex.size());
+
+    for (int i = 0; i < vertex.size(); i++)
+    {
+        d->m_vertex[i].create();
+        d->m_vertex[i].bind();
+        d->m_vertex[i].allocate(&vertex[i][0], vertex[i].size() * sizeof(QVector3D));
+        d->m_vertex[i].release();
+
+        d->m_count[i] = vertex[i].size();
+    }
+}
+
+DiVBOWire::~DiVBOWire()
+{
+    delete d;
+}
+
+void DiVBOWire::render(DiShdr& shdr)
+{
+    for (int i = 0; i < d->m_vertex.size(); i++)
+    {
+        d->m_vertex[i].bind();
+        shdr.bindWireVBO();
+        glDrawArrays(GL_LINE_STRIP, 0, d->m_count[i]);
+        d->m_vertex[i].release();
+    }
 }

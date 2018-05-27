@@ -3,19 +3,32 @@
 
 #include "DiShdr.h"
 
-class VXDISP_EXPORT DiVBO
+class VXDISP_EXPORT DiVBOFace
 {
 public:
-    DiVBO(QVector<QVector3D>& vertex, QVector<short>& index);
-    ~DiVBO();
+    DiVBOFace(QVector<QVector3D>& vertex, QVector<short>& index);
+    ~DiVBOFace();
 
-    void renderSurf(DiShdr& shdr);
-    void renderWire(DiShdr& shdr);
+    void render(DiShdr& shdr);
 
 private:
-    friend class DiVBOImpl;
-    DiVBOImpl *d;
+    friend class DiVBOFaceImpl;
+    DiVBOFaceImpl *d;
 };
+
+class VXDISP_EXPORT DiVBOWire
+{
+public:
+    DiVBOWire(QVector<QVector<QVector3D>>& vertex);
+    ~DiVBOWire();
+
+    void render(DiShdr& shdr);
+
+private:
+    friend class DiVBOWireImpl;
+    DiVBOWireImpl *d;
+};
+
 
 #endif
 
