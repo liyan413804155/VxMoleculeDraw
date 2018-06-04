@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="OM">
+      <UniqueIdentifier>{5643bc11-5055-4cb3-b9c6-61a4d66f5836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{bd60083c-4c38-4e66-a29a-741b1e2a5823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DB\Header Files">
+      <UniqueIdentifier>{bd65443a-35da-42ae-a11e-f3c054934213}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="DB\Source Files">
+      <UniqueIdentifier>{aecf3312-35f8-4836-8e70-8c6fa309ac1f}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="OM\Source Files">
+      <UniqueIdentifier>{af2c57d9-a6e0-4447-8e60-64aa1073f6c7}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="OM\Header Files">
+      <UniqueIdentifier>{c43db0ac-186b-4697-91cf-ec5df3dd2237}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{dbcddf47-bfdf-4804-a458-3b0ba3231f15}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DB\DbAtom.cpp">
+      <Filter>DB\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DbBase.cpp">
+      <Filter>DB\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DbBone.cpp">
+      <Filter>DB\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DbDrawing.cpp">
+      <Filter>DB\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OM\OmBin.cpp">
+      <Filter>OM\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OM\OmOp.cpp">
+      <Filter>OM\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OM\OmXn.cpp">
+      <Filter>OM\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DbGrp.cpp">
+      <Filter>DB\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DB\DbAtom.h">
+      <Filter>DB\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DbBase.h">
+      <Filter>DB\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DbBone.h">
+      <Filter>DB\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DbDrawing.h">
+      <Filter>DB\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OM\OmBin.h">
+      <Filter>OM\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OM\OmOp.h">
+      <Filter>OM\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OM\OmXn.h">
+      <Filter>OM\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VxDb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VxDbCm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DbGrp.h">
+      <Filter>DB\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

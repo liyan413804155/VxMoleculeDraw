@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest\UnitT
 		{290A51FC-C4E8-4ABA-9E0E-A563296FE2BF} = {290A51FC-C4E8-4ABA-9E0E-A563296FE2BF}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VxDb", "VxDb\VxDb.vcxproj", "{5DE87029-FCD1-4915-9094-411EC20ABBB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -42,6 +44,10 @@ Global
 		{9846C095-7ABE-47BA-87CB-954E7962F973}.Debug|x86.Build.0 = Debug|Win32
 		{9846C095-7ABE-47BA-87CB-954E7962F973}.Release|x86.ActiveCfg = Release|Win32
 		{9846C095-7ABE-47BA-87CB-954E7962F973}.Release|x86.Build.0 = Release|Win32
+		{5DE87029-FCD1-4915-9094-411EC20ABBB9}.Debug|x86.ActiveCfg = Debug|Win32
+		{5DE87029-FCD1-4915-9094-411EC20ABBB9}.Debug|x86.Build.0 = Debug|Win32
+		{5DE87029-FCD1-4915-9094-411EC20ABBB9}.Release|x86.ActiveCfg = Release|Win32
+		{5DE87029-FCD1-4915-9094-411EC20ABBB9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
